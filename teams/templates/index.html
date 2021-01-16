@@ -1,0 +1,11 @@
+<table>
+  <tbody>
+    {% for team in premier_league_teams %}
+    <tr>
+      <td>{{ team.name }}</td>
+      <td>{{ team.country }}</td>
+      <td>{{ team.founded }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
