@@ -10,6 +10,17 @@
       <td>
         <a href="{% url 'team' team_id=team.team_id %}">View Team Page</a>
       </td>
+      <td>
+        {% if team.team_id in followed_teams %}
+        <a href="{% url 'unfollow' api_id=team.team_id name=team.name %}">
+          UnFollow
+        </a>
+        {% else %}
+        <a href="{% url 'follow' api_id=team.team_id name=team.name %}">
+          Follow
+        </a>
+        {% endif %}
+      </td>
     </tr>
     {% endfor %}
   </tbody>
