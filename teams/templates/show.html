@@ -1,0 +1,11 @@
+<h1>{{ details.name }}</h1>
+<table>
+  {% for fixture in fixtures %}
+  <tr>
+    <td>{{ fixture.homeTeam.team_name }}</td>
+    <td>{{ fixture.score.fulltime }}</td>
+    <td>{{ fixture.awayTeam.team_name }}</td>
+  </tr>
+  {% endfor %}
+</table>
+<a href="{% url 'logout' %}">Logout</a>
