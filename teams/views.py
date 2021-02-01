@@ -19,9 +19,13 @@ def index(request):
     url = "https://api-football-v1.p.rapidapi.com/v2/teams/league/2790"
     response = requests.request("GET", url, headers = rapid_api_headers)
     res_dict = json.loads(response.text)
+    if request.user.is_authenticated:
+        followed_teams = [team.api_id for team in request.user.profile.teams.all()]
+    else:
+        followed_teams = []
     args = {
         'premier_league_teams': res_dict['api']['teams'],
-        'followed_teams': [team.api_id for team in request.user.profile.teams.all()],
+        'followed_teams': followed_teams,
     }
     return render(request, 'index.html', args)
 
