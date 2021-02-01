@@ -1,11 +1,18 @@
 <h1>{{ details.name }}</h1>
 <table>
-  {% for fixture in fixtures %}
+  {% for result in results %}
   <tr>
-    <td>{{ fixture.homeTeam.team_name }}</td>
-    <td>{{ fixture.score.fulltime }}</td>
-    <td>{{ fixture.awayTeam.team_name }}</td>
+    <td>{{ result.homeTeam.team_name }}</td>
+    <td>{{ result.score.fulltime }}</td>
+    <td>{{ result.awayTeam.team_name }}</td>
   </tr>
   {% endfor %}
 </table>
+<h1>Top Headlines</h1>
+{% for article in headlines.articles %}
+<div>
+  <h3>{{ article.title }}</h3>
+  <p>{{ article.content }}</p>
+</div>
+{% endfor %}
 <a href="{% url 'logout' %}">Logout</a>

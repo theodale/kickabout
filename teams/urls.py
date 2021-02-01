@@ -6,5 +6,4 @@ urlpatterns = [
     path('<int:team_id>', views.show, name="team"),
     path('follow/<int:api_id>/<str:name>', views.follow_team, name='follow'),
     path('unfollow/<int:api_id>/<str:name>', views.unfollow_team, name='unfollow'),
-
 ]
