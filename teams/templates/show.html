@@ -16,4 +16,23 @@
   <h3>{{ article.title }}</h3>
   <p>{{ article.content }}</p>
 </div>
-{% endfor %} {% endblock %}
+{% endfor %}
+<div>
+  <table>
+    {% for tweet in related_tweets %}
+    <tr>
+      <td>{{ tweet.text }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+<div>
+  <ul>
+    {% for article in guardian_articles %}
+    <li>
+      <a href="{{ article.webUrl }}">{{ article.webTitle }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

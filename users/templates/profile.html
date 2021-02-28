@@ -1,0 +1,8 @@
+<h4>Name</h4>
+<p>{{ user.username }}</p>
+<h4>Followed Teams</h4>
+<ul>
+  {% for team in profile.teams.all %}
+  <li>{{ team.name }}</li>
+  {% endfor %}
+</ul>
