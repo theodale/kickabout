@@ -9,6 +9,8 @@
       <a href="{% url 'login' %}">Login</a>
       <a href="{% url 'signup' %}">SignUp</a>
       {% endif %}
+      <a href="{% url 'feed' %}">Feed</a>
+      <a href="{% url 'teams' %}">Teams</a>
     </div>
     <div id="content">{% block content %}{% endblock %}</div>
   </body>

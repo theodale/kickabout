@@ -1,4 +1,15 @@
 {% extends "base.html" %} {% block content %}
 <h1>Your Feed</h1>
 
+<div>
+  <ul>
+    {% for article in feed %}
+    <li>
+      {{ article.publishedAt }} -
+      <a href="{{ article.url }}">{{ article.title }}</a> - {{article.source}}
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
 {% endblock %}
