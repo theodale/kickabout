@@ -1,15 +1,39 @@
 {% extends "base.html" %} {% block content %}
 <h1>Your Feed</h1>
-
 <div>
+  {% if feed|length > 0 %}
   <ul>
     {% for article in feed %}
     <li>
       {{ article.publishedAt }} -
       <a href="{{ article.url }}">{{ article.title }}</a> - {{article.source}}
+      {% if article.title in saved_news_item_titles %}
+      <form action="/feed/unsave-news-item" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="profile_id" value="{{ user_profile_id }}" />
+        <input type="hidden" name="title" value="{{ article.title }}" />
+        <input type="hidden" name="page_id" value="{{ page_id }}" />
+        <input type="submit" value="UnSave" />
+      </form>
+      {% else %}
+      <form action="/feed/save-news-item" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="profile_id" value="{{ user_profile_id }}" />
+        <input type="hidden" name="title" value="{{ article.title }}" />
+        <input type="hidden" name="url" value="{{ article.url }}" />
+        <input type="hidden" name="source" value="{{ article.source }}" />
+        <input type="hidden" name="date" value="{{ article.publishedAt }}" />
+        <input type="hidden" name="page_id" value="{{ page_id }}" />
+        <input type="submit" value="Save" />
+      </form>
+      {% endif %}
     </li>
     {% endfor %}
   </ul>
+  <a href="{% url 'feed' page_id=next_page_id %}">MORE NEWS</a>
+  {% else %}
+  <p>You are following no teams!</p>
+  {% endif %}
 </div>
 
 {% endblock %}

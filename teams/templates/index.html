@@ -1,28 +1,83 @@
-{% extends "base.html" %} {% block content %}
-<h1>Premier League Teams</h1>
-<table>
-  <tbody>
-    {% for team in premier_league_teams %}
-    <tr>
-      <td>{{ team.name }}</td>
-      <td>{{ team.country }}</td>
-      <td>{{ team.founded }}</td>
-      <td>
-        <a href="{% url 'team' team_id=team.team_id %}">View Team Page</a>
-      </td>
-      <td>
-        {% if team.team_id in followed_teams %}
-        <a href="{% url 'unfollow' api_id=team.team_id name=team.name %}">
-          UnFollow
-        </a>
-        {% else %}
-        <a href="{% url 'follow' api_id=team.team_id name=team.name %}">
-          Follow
-        </a>
-        {% endif %}
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+{% extends "base_logged_in.html" %}
+{% block logged_in_head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'teams/style.css' %}" type="text/css" />
 {% endblock %}
+{% block logged_in_content %}
+<div class="row">
+  <div class="col-8 px-4">
+    <div class="card teams-card shadow py-3">
+      <div class="row">
+        <div class="col-12 d-flex justify-content-center">
+          <h1 class="kickabout-grey">Premier League Teams</h1>
+        </div>
+      </div>
+      <div class="row pt-3">
+        <div class="col-12 d-flex justify-content-center">
+          <div class="teams-div container">
+            {% for team in premier_league_teams %}
+              <div class="row mb-1">
+                <div class="col-6">
+                  <h5>{{ team.name }}</h5>
+                </div>
+                <div class="col-3">
+                  <a href="{% url 'signup' %}" class="h6 view-team-link">
+                    Team News
+                  </a>
+                </div>
+                <div class="col-3 d-flex justify-content-center">
+                  {% if team.team_id in followed_teams_api_ids %}
+                  <a href="{% url 'unfollow' api_id=team.team_id  %}" class="h6 unfollow-team-link">
+                    UnFollow
+                  </a>
+                  {% else %}
+                  <a href="{% url 'follow' api_id=team.team_id name=team.name %}" class="h6 follow-team-link">
+                    Follow
+                  </a>
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-4">
+    <div class="card guidance-header-card shadow mb-3">
+        <div class="row pt-2">
+          <div class="col-12 d-flex justify-content-center">
+            <h3 class="kickabout-grey">Site Guidance</h3>
+          </div>
+        </div>
+    </div>
+    <div class="card guidance-card shadow">
+      <div class="row">
+        <div class="col-12 px-5 pt-3">
+          <p>
+            Select which teams you want to follow on the table on the left. You
+            can view their induvidual news pages on view the 'Team News' link.
+          </p>
+          <p>
+            View a news feed consisting of articles related to the teams you
+            follow by clicking on the feed link in the navbar.
+          </p>
+          <p>
+            You can save articles on the feed and team news pages. Click the
+            profile link in the navbar to see these saved articles.
+          </p>
+          <p>
+            This site was created by Theo Dale. The fantasy football predictions
+            and information were created by Anirudh Yadav.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
+
+

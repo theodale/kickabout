@@ -1,5 +1,59 @@
-<h1>LOGIN</h1>
-<form method="post">
-  {% csrf_token %} {{ form.as_p }}
-  <input type="submit" value="Login" />
-</form>
+{% extends 'base.html' %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'users/style.css' %}" type="text/css" />
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row background-kickabout-green">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <div class="card home-card container">
+              <div class="row h-100">
+                <div class="col-6 d-flex justify-content-center">
+                  <div class="d-flex kickabout-purple home-logo">
+                      <h1 class="me-2">KickAbout</h1>
+                      <i class="fas fa-futbol fa-lg"></i>
+                  </div>
+                </div>
+                <div class="col-6 d-flex justify-content-center align-items-center">
+                  <div class="card home-form-card background-kickabout-green container">
+                    <div class="row h-100">
+                      <div class="col-12 h-100 py-2">
+                        <form method="post" class="h-100">
+                          {% csrf_token %}
+                          <div class="d-flex flex-column h-100 justify-content-between py-3">
+                            <div>
+                              <div class="form-group">
+                                <label for="username" class="home-form-label mb-1">Username</label>
+                                <input type="text" name="username" class="form-control"
+                                       id="username" placeholder="Enter Username">
+                              </div>
+                              <div class="form-group mt-3">
+                                <label for="password" class="home-form-label mb-1">Password</label>
+                                <input type="password" name="password" class="form-control"
+                                       id="password" placeholder="Enter Password">
+                              </div>
+                            </div>
+                            <div>
+                              <button type="submit" class="btn background-kickabout-blue home-form-button">
+                                Login
+                              </button>
+                            </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+

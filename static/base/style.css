@@ -1,0 +1,43 @@
+* {
+    font-family: "Nunito", sans-serif;
+}
+
+.kickabout-blue {
+    color: rgba(70, 130, 180, 0.9);
+}
+
+.background-kickabout-blue {
+    background-color: rgba(70, 130, 180, 0.9);
+}
+
+.kickabout-purple {
+    color: rgba(106, 90, 205, 0.8);
+}
+
+.background-kickabout-purple {
+    background-color: rgba(106, 90, 205, 0.8);
+}
+
+.kickabout-grey {
+    color: rgba(0, 0, 0, 0.75);
+}
+
+.background-kickabout-green {
+    background-color: #23a776;
+}
+
+.kickabout-green {
+    color: #23a776;
+}
+
+.navbar-text {
+    color: white;
+}
+
+.kickabout-nav-link:hover {
+    color: rgba(0, 0, 0, 0.46);
+}
+
+.test {
+    background-color: red;
+}

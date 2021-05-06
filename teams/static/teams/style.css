@@ -1,0 +1,45 @@
+.teams-card {
+    border-radius: 25px;
+    border: none;
+    background-color: rgba(106, 90, 205, 0.1);
+}
+
+.view-team-link {
+    color: rgba(70, 130, 180, 0.9);
+    text-decoration: none;
+}
+
+.follow-team-link {
+    color: 	rgba(34, 139, 34, 0.8);
+    text-decoration: none;
+}
+
+.follow-team-link:hover {
+    color: 	rgba(34, 139, 34, 1);
+    text-decoration: none;
+}
+
+.unfollow-team-link {
+    color: 	rgba(255, 0, 0, 0.8);
+    text-decoration: none;
+}
+
+.unfollow-team-link:hover {
+    color: 	rgba(255, 0, 0, 1);
+}
+
+.teams-div {
+    width: 85%;
+}
+
+.guidance-header-card {
+    border-radius: 25px;
+    border: none;
+    background-color: rgba(0, 0, 255, 0.3);
+}
+
+.guidance-card {
+    border-radius: 25px;
+    border: none;
+    background-color: rgba(255, 255, 0, 0.15);
+}

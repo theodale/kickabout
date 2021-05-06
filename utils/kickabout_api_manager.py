@@ -7,6 +7,7 @@ import tweepy as tw
 import datetime
 from theguardian import theguardian_content
 from theguardian import theguardian_tag
+import math
 
 
 rapid_api_headers = {
@@ -24,7 +25,7 @@ TWITTER_ACCESS_TOKEN_SECRET = 'QmGHIkvSxb2myUvRLEuBiRn5ACMUfcjpjZXkxipLqWf0U'
 
 auth = tw.OAuthHandler(TWITTER_API_KEY, TWITTER_API_KEY_SECRET)
 auth.set_access_token(TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_TOKEN_SECRET)
-api = tw.API(auth, wait_on_rate_limit=True)
+api = tw.API(auth, wait_on_rate_limit = True)
 
 guardian_api_key = "4a293514-81cc-43db-b1d1-d0ca39863424"
 
@@ -65,7 +66,7 @@ def get_team_news(team_name, page_number, page_size):
 
 
 # pages of 10 articles
-def get_guardian_articles(team_name, page_number):
+def get_guardian_articles(team_name, page_number, page_size):
     # get team's tag api URL
     headers = {
         "q": team_name,
@@ -74,25 +75,28 @@ def get_guardian_articles(team_name, page_number):
     }
     tag = theguardian_tag.Tag(guardian_api_key, **headers)
     tag_content = tag.get_content_response()
-    print(tag_content)
     results = tag.get_results(tag_content)
     tag_api_url = results[0]["apiUrl"]
     # get articles from tag
     content = theguardian_content.Content(
         guardian_api_key,
         url = tag_api_url,
-        page = page_number)
-    content_response = content.get_content_response()
+        headers = {"page-size": page_size}
+    )
+    content_response = content.get_content_response(headers = {"page": page_number})
     return content_response['response']['results']
 
 
-def get_feed(followed_teams, posts_per_team):
+def get_feed(followed_teams, page_number):
+    if len(followed_teams) < 1:
+        return []
+    page_size = math.ceil(30 / (len(followed_teams) * 2))
     news_api_articles = []
     guardian_articles = []
     for team in followed_teams:
-        response = get_team_news(team.name)
+        response = get_team_news(team.name, page_number, page_size)
         news_api_articles += response['articles']
-        response = get_guardian_articles(team.name)
+        response = get_guardian_articles(team.name, page_number, page_size)
         guardian_articles += response
     for article in guardian_articles:
         article['publishedAt'] = article['webPublicationDate']
@@ -106,7 +110,7 @@ def get_feed(followed_teams, posts_per_team):
         source_name = article['source']['name']
         article['source'] = source_name
     articles = news_api_articles + guardian_articles
-    # bubble sort by date
+    # bubble sort articles by date
     l = len(articles)
     for n in range(l):
         for k in range(0, l-n-1):
@@ -122,6 +126,7 @@ def get_feed(followed_teams, posts_per_team):
     for i in range(len(copy_article_indexes)):
         articles.remove(None)
     return articles
+
 
 def get_article_date(article):
     return datetime.datetime.strptime(article['publishedAt'][:-4],"%Y-%m-%dT%H:%M")

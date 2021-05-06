@@ -1,0 +1,42 @@
+.home-card {
+    height: 450px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.home-logo {
+    margin-top: 150px;
+}
+
+.home-link {
+    text-decoration: none;
+}
+
+.home-link-content:hover {
+    color: rgba(70, 130, 180, 1);
+}
+
+.home-form-button {
+    color: white;
+}
+
+.home-form-button:hover {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.home-form-card {
+    width: 80%;
+    height: 80%;
+    border-radius: 10%;
+    border: none;
+}
+
+.home-form-label {
+    color: white;
+    font-size: 21px;
+}
+
+.test {
+    background-color: red;
+}
+

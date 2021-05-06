@@ -7,4 +7,5 @@ urlpatterns = [
     path('signup/', views.SignUpView.as_view(), name="signup"),
     path('logout/', auth_views.LogoutView.as_view(), name="logout"),
     path('profile/', views.profile, name="profile"),
+    path('unsave-news-item/', views.unsave_news_item, name="profile_unsave_news_item")
 ]

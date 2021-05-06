@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'teams',
     'users',
-    'feed'
+    'feed',
+    'fontawesome-free',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -118,10 +120,12 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static"
+]
+
 LOGIN_REDIRECT_URL = "teams"
-LOGOUT_REDIRECT_URL = "login"
+LOGOUT_REDIRECT_URL = "home"
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block head %}
+{% block logged_in_head %}{% endblock %}
+{% endblock %}
+{% block content %}
+<div class="fluid-container">
+    <div class="row">
+        <div class="col-12">
+            <nav class="navbar navbar-expand-lg background-kickabout-green m-4">
+                <span class="navbar-brand navbar-text mb-0 ms-3">
+                    KickAbout
+                    <i class="fas fa-futbol ms-1"></i>
+                </span>
+                <div class="collapse navbar-collapse justify-content-end">
+                    <ul class="navbar-nav me-2">
+                        <li class="nav-item">
+                            <a class="nav-link navbar-text kickabout-nav-link"
+                                href="{% url 'feed' page_id=1%}">Feed</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link navbar-text kickabout-nav-link"
+                                href="{% url 'teams' %}">Teams</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link navbar-text kickabout-nav-link"
+                            href="{% url 'profile' %}">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link navbar-text kickabout-nav-link"
+                                href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 px-5 my-3">
+            {% block logged_in_content %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
