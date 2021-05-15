@@ -1,39 +1,106 @@
-{% extends "base.html" %} {% block content %}
-<h1>Your Feed</h1>
-<div>
-  {% if feed|length > 0 %}
-  <ul>
-    {% for article in feed %}
-    <li>
-      {{ article.publishedAt }} -
-      <a href="{{ article.url }}">{{ article.title }}</a> - {{article.source}}
-      {% if article.title in saved_news_item_titles %}
-      <form action="/feed/unsave-news-item" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="profile_id" value="{{ user_profile_id }}" />
-        <input type="hidden" name="title" value="{{ article.title }}" />
-        <input type="hidden" name="page_id" value="{{ page_id }}" />
-        <input type="submit" value="UnSave" />
-      </form>
-      {% else %}
-      <form action="/feed/save-news-item" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="profile_id" value="{{ user_profile_id }}" />
-        <input type="hidden" name="title" value="{{ article.title }}" />
-        <input type="hidden" name="url" value="{{ article.url }}" />
-        <input type="hidden" name="source" value="{{ article.source }}" />
-        <input type="hidden" name="date" value="{{ article.publishedAt }}" />
-        <input type="hidden" name="page_id" value="{{ page_id }}" />
-        <input type="submit" value="Save" />
-      </form>
-      {% endif %}
-    </li>
-    {% endfor %}
-  </ul>
-  <a href="{% url 'feed' page_id=next_page_id %}">MORE NEWS</a>
-  {% else %}
-  <p>You are following no teams!</p>
-  {% endif %}
-</div>
-
+{% extends "base_logged_in.html" %}
+{% block logged_in_head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'feed/style.css' %}" type="text/css" />
 {% endblock %}
+{% block logged_in_content %}
+{% if feed|length > 0 %}
+<div class="row my-3">
+  <div class="col-2">
+  </div>
+  <div class="col-8 blue-card pt-4">
+    {% for article in feed %}
+    <div class="row mb-4 px-3">
+      <div class="col-12 feed-card py-2">
+        <div class="row">
+          {% if article.source == "The Guardian" %}
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12 d-flex justify-content-between">
+                <h5>{{ article.source }}</h5>
+                <h6>{{ article.publishedAt|slice:':10' }}</h6>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <a class="headline-link" href="{{ article.url }}">
+                  {{ article.title }}
+                </a>
+              </div>
+            </div>
+          </div>
+          {% else %}
+          <div class="col-8 d-flex flex-column justify-content-between">
+            <div>
+              <div class="row">
+                <div class="col-12 d-flex justify-content-between">
+                  <h5>{{ article.source }}</h5>
+                  <h6>{{ article.publishedAt|slice:':10' }}</h6>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <a class="headline-link" href="{{ article.url }}">
+                    {{ article.title }}
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                {% if article.title in saved_news_item_titles %}
+                <form action="/accounts/unsave-news-item/" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="profile_id" value="{{ user_profile_id }}" />
+                  <input type="hidden" name="title" value="{{ article.title }}" />
+                  <input type="hidden" name="page_id" value="{{ page_id }}" />
+                  <input type="submit" value="UnSave" class="unsave-btn"/>
+                </form>
+                {% else %}
+                <form action="/accounts/save-news-item/" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="profile_id" value="{{ user_profile_id }}" />
+                  <input type="hidden" name="title" value="{{ article.title }}" />
+                  <input type="hidden" name="url" value="{{ article.url }}" />
+                  <input type="hidden" name="source" value="{{ article.source }}" />
+                  <input type="hidden" name="date" value="{{ article.publishedAt }}" />
+                  <input type="hidden" name="page_id" value="{{ page_id }}" />
+                  <input type="submit" value="Save" class="save-btn" />
+                </form>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <img src="{{ article.urlToImage }}" class="feed-item-image">
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="col-2">
+  </div>
+</div>
+<div class="row my-5">
+  <div class="col-12 d-flex justify-content-center">
+    <a href="{% url 'feed' page_id=next_page_id %}"
+       class="follow-link">
+      MORE NEWS
+    </a>
+  </div>
+</div>
+{% else %}
+<div class="row my-3">
+  <div class="col-12 d-flex justify-content-center">
+    You are not following any teams!
+  </div>
+  <div class="col-12 d-flex justify-content-center mt-3">
+    Go to the teams page via the teams navbar link and follow some teams
+    to create a feed.
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+

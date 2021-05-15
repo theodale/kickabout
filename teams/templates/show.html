@@ -1,85 +1,201 @@
-{% extends "base.html" %} {% block content %}
-
-<h1>{{ details.name }}</h1>
-{% if followed %}
-<a href="{% url 'follow' api_id=team.team_id  %}">
-  UnFollow Team
-</a>
-{% else %}
-<a href="{% url 'follow' api_id=team.team_id name=team.name %}">
-  Follow Team
-</a>
-{% end %}
-<table>
-  {% for result in results %}
-  <tr>
-    <td>{{ result.homeTeam.team_name }}</td>
-    <td>{{ result.score.fulltime }}</td>
-    <td>{{ result.awayTeam.team_name }}</td>
-  </tr>
-  {% endfor %}
-</table>
-<h1>Top Headlines</h1>
-{% for article in headlines.articles %}
-<div>
-  <h3>{{ article.title }}</h3>
-  <p>{{ article.content }}</p>
-  {% if article.title in saved_news_item_titles %}
-  <form action="/teams/unsave-news-item" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="profile_id" value="{{ user_profile_id }}" />
-    <input type="hidden" name="title" value="{{ article.title }}" />
-    <input type="hidden" name="team_id" value="{{ team_id }}" />
-    <input type="submit" value="UnSave" />
-  </form>
-  {% else %}
-  <form action="/teams/save-news-item" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="profile_id" value="{{ user_profile_id }}" />
-    <input type="hidden" name="title" value="{{ article.title }}" />
-    <input type="hidden" name="url" value="{{ article.url }}" />
-    <input type="hidden" name="source" value="{{ article.source }}" />
-    <input type="hidden" name="date" value="{{ article.publishedAt }}" />
-    <input type="hidden" name="team_id" value="{{ team_id }}" />
-    <input type="submit" value="Save" />
-  </form>
-  {% endif %}
-</div>
-{% endfor %}
-<div>
-  <table>
-    {% for tweet in tweets %}
-    <tr>
-      <td>{{ tweet.text }}</td>
-    </tr>
-    {% endfor %}
-  </table>
-</div>
-<div>
-  <ul>
-    {% for article in guardian_articles %}
-    <li>
-      <a href="{{ article.webUrl }}">{{ article.webTitle }}</a>
-      {% if article.title in saved_news_item_titles %}
-      <form action="/feed/unsave-news-item" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="profile_id" value="{{ user_profile_id }}" />
-        <input type="hidden" name="title" value="{{ article.title }}" />
-        <input type="submit" value="UnSave" />
-      </form>
-      {% else %}
-      <form action="/feed/save-news-item" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="profile_id" value="{{ user_profile_id }}" />
-        <input type="hidden" name="title" value="{{ article.title }}" />
-        <input type="hidden" name="url" value="{{ article.url }}" />
-        <input type="hidden" name="source" value="{{ article.source }}" />
-        <input type="hidden" name="date" value="{{ article.publishedAt }}" />
-        <input type="submit" value="Save" />
-      </form>
-      {% endif %}
-    </li>
-    {% endfor %}
-  </ul>
+{% extends "base_logged_in.html" %}
+{% block logged_in_head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'teams/style.css' %}" type="text/css" />
+{% endblock %}
+{% block logged_in_content %}
+<div class="row mb-3">
+  <div class="col-6">
+    <div class="row mb-3">
+      <div class="col-12">
+        <h1>{{ details.name }}</h1>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-12">
+        <div class="card green-card shadow px-5 py-4">
+          <div class="row mb-2">
+            <div class="col-12">
+              <h5 class="results-header">Top Headlines</h5>
+            </div>
+          </div>
+          {% for article in headlines.articles %}
+          <div class="row mb-2">
+            <div class="col-10">
+              <a class="headline-link" href="{{ article.url }}">
+                {{ article.title }}
+              </a>
+            </div>
+            <div class="col-2 d-flex justify-content-center">
+              {% if article.title in saved_news_item_titles %}
+              <form action="/accounts/unsave-news-item/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="profile_id" value="{{ user_profile_id }}" />
+                <input type="hidden" name="title" value="{{ article.title }}" />
+                <input type="hidden" name="team_id" value="{{ team_id }}" />
+                <input type="submit" value="UnSave" class="unsave-btn"/>
+              </form>
+              {% else %}
+              <form action="/accounts/save-news-item/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="profile_id" value="{{ user_profile_id }}" />
+                <input type="hidden" name="title" value="{{ article.title }}" />
+                <input type="hidden" name="url" value="{{ article.url }}" />
+                <input type="hidden" name="source" value="{{ article.source }}" />
+                <input type="hidden" name="date" value="{{ article.publishedAt }}" />
+                <input type="hidden" name="team_id" value="{{ team_id }}" />
+                <input type="submit" value="Save" class="save-btn"/>
+              </form>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% if headlines.articles|length < 13 %}
+    <div class="row">
+      <div class="col-12">
+        <div class="card yellow-card shadow p-4">
+          <div class="row mb-3">
+            <div class="col-12">
+              <h5 class="results-header">Guardian Articles </h5>
+            </div>
+          </div>
+          {% for article in guardian_articles %}
+          <div class="row mb-2 guardian-text">
+            <div class="col-10">
+              <a class="headline-link" href="{{ article.webUrl }}">
+                {{ article.webTitle }}
+              </a>
+            </div>
+            <div class="col-2 d-flex justify-content-center">
+              {% if article.webTitle in saved_news_item_titles %}
+              <form action="/accounts/unsave-news-item/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="profile_id" value="{{ user_profile_id }}" />
+                <input type="hidden" name="team_id" value="{{ team_id }}" />
+                <input type="hidden" name="title" value="{{ article.webTitle }}" />
+                <input type="submit" value="UnSave" class="unsave-btn" />
+              </form>
+              {% else %}
+              <form action="/accounts/save-news-item/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="profile_id" value="{{ user_profile_id }}" />
+                <input type="hidden" name="team_id" value="{{ team_id }}" />
+                <input type="hidden" name="title" value="{{ article.webTitle }}" />
+                <input type="hidden" name="url" value="{{ article.webUrl }}" />
+                <input type="hidden" name="source" value="The Guardian" />
+                <input type="hidden" name="date" value="{{ article.webPublicationDate }}" />
+                <input type="submit" value="Save" class="save-btn" />
+              </form>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <div class="col-6">
+    <div class="row">
+      <div class="col-12 d-flex justify-content-end">
+        <img src="{{ details.logo }}" class="team-logo">
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card light-purple-card shadow px-5 py-4">
+          <div class="row mb-2">
+            <div class="col-12">
+              <h5 class="results-header">Last 10 Results</h5>
+            </div>
+          </div>
+          {% for result in results %}
+          <div class="row mb-2">
+            <div class="col-5">
+              {{ result.homeTeam.team_name }}
+            </div>
+            <div class="col-2 d-flex justify-content-center results-score">
+              {{ result.score.fulltime }}
+            </div>
+            <div class="col-5 d-flex justify-content-end">
+              {{ result.awayTeam.team_name }}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card twitter-blue-card shadow p-4">
+          <div class="row mb-3">
+            <div class="col-12 d-flex justify-content-between">
+              <h5 class="results-header">Trending Tweets</h5>
+              <i class="fab fa-twitter twitter-icon"></i>
+            </div>
+          </div>
+          {% for tweet in tweets %}
+          <div class="row mb-2">
+            <div class="col-3 tweet-handle">
+              @{{ tweet.user }}
+            </div>
+            <div class="col-9 tweet-text-col">
+              <a class="tweet-text" href="{{ tweet.url }}">
+                {{ tweet.text|slice:':70'}}..
+              </a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% if headlines.articles|length > 12 %}
+    <div class="row">
+      <div class="col-12">
+        <div class="card yellow-card shadow p-4">
+          <div class="row mb-3">
+            <div class="col-12">
+              <h5 class="results-header">Guardian Articles</h5>
+            </div>
+          </div>
+          {% for article in guardian_articles %}
+          <div class="row mb-2 guardian-text">
+            <div class="col-10">
+              <a class="headline-link" href="{{ article.webUrl }}">
+                {{ article.webTitle }}
+              </a>
+            </div>
+            <div class="col-2 d-flex justify-content-center">
+              {% if article.webTitle in saved_news_item_titles %}
+              <form action="/accounts/unsave-news-item/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="profile_id" value="{{ user_profile_id }}" />
+                <input type="hidden" name="team_id" value="{{ team_id }}" />
+                <input type="hidden" name="title" value="{{ article.webTitle }}" />
+                <input type="submit" value="UnSave" class="unsave-btn" />
+              </form>
+              {% else %}
+              <form action="/accounts/save-news-item/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="profile_id" value="{{ user_profile_id }}" />
+                <input type="hidden" name="team_id" value="{{ team_id }}" />
+                <input type="hidden" name="title" value="{{ article.webTitle }}" />
+                <input type="hidden" name="url" value="{{ article.webUrl }}" />
+                <input type="hidden" name="source" value="The Guardian" />
+                <input type="hidden" name="date" value="{{ article.webPublicationDate }}" />
+                <input type="submit" value="Save" class="save-btn" />
+              </form>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

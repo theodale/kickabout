@@ -2,6 +2,10 @@
     font-family: "Nunito", sans-serif;
 }
 
+body {
+    background-color: rgba(240, 255, 255, 0.6);
+}
+
 .kickabout-blue {
     color: rgba(70, 130, 180, 0.9);
 }
@@ -38,6 +42,92 @@
     color: rgba(0, 0, 0, 0.46);
 }
 
-.test {
-    background-color: red;
+.light-purple-card {
+    border-radius: 25px;
+    border: none;
+    background-color: rgba(106, 90, 205, 0.1);
 }
+
+.dark-purple-card {
+    border-radius: 25px;
+    border: none;
+    background-color: rgba(0, 0, 255, 0.3);
+}
+
+.blue-card {
+    border-radius: 25px;
+    border: none;
+    background-color: rgba(70, 130, 180, 0.9);
+}
+
+.yellow-card {
+    border-radius: 25px;
+    border: none;
+    background-color: rgba(255, 255, 0, 0.15);
+}
+
+.green-card {
+    background-color: rgba(0, 255, 0, 0.15);
+    border-radius: 25px;
+    border: none;
+}
+
+.twitter-blue-card {
+    background-color: rgb(29, 161, 242, 0.75);
+    border-radius: 25px;
+    border: none;
+}
+
+.save-btn {
+    border: none;
+    background: none;
+    color: rgba(0, 100, 0, 1);
+}
+
+.save-btn:hover {
+    border: none;
+    background: none;
+    color: rgb(25, 25, 112);
+}
+
+.unsave-btn {
+    border: none;
+    background: none;
+    color: 	rgba(255, 0, 0, 1);
+}
+
+.unsave-btn:hover {
+    border: none;
+    background: none;
+    color: rgb(25, 25, 112);
+}
+
+.unfollow-link {
+    color: 	rgba(255, 0, 0, 0.8);
+    text-decoration: none;
+}
+
+.unfollow-link:hover {
+    color: 	rgba(255, 0, 0, 1);
+}
+
+.headline-link {
+    color: rgba(0, 0, 0, 0.75);
+    text-decoration: none;
+}
+
+.headline-link:hover {
+    color: rgba(32, 151, 248);
+    text-decoration: none;
+}
+
+.follow-link {
+    color: 	rgba(34, 139, 34, 0.8);
+    text-decoration: none;
+}
+
+.follow-link:hover {
+    color: 	rgba(34, 139, 34, 1);
+    text-decoration: none;
+}
+

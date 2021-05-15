@@ -25,18 +25,27 @@
                           <div class="d-flex flex-column h-100 justify-content-between py-3">
                             <div>
                               <div class="form-group">
-                                <label for="usernameInput" class="home-form-label mb-1">Username</label>
+                                <label for="usernameInput" class="form-label mb-1">Username</label>
                                 <input type="text" name="username" class="form-control" id="usernameInput" placeholder="Enter Username">
                               </div>
                               <div class="form-group mt-2">
-                                <label for="passwordInput" class="home-form-label mb-1">Password</label>
+                                <label for="passwordInput" class="form-label mb-1">Password</label>
                                 <input type="password" name="password1" class="form-control" id="passwordInput" placeholder="Enter Password">
                               </div>
                               <div class="form-group mt-2">
-                                <label for="passwordConfirmationInput" class="home-form-label mb-1">Password Confirmation</label>
+                                <label for="passwordConfirmationInput" class="form-label mb-1">Password Confirmation</label>
                                 <input type="password" name="password2" class="form-control"
                                        id="passwordConfirmationInput" placeholder="Enter Password Again">
                               </div>
+                              {% if form.errors %}
+                              <p class="form-error-text mt-3">
+                                {% for field, errors in form.errors.items %}
+                                  {% for error in errors %}
+                                    {{ error }}
+                                  {% endfor %}
+                                {% endfor %}
+                              </p>
+                              {% endif %}
                             </div>
                             <div>
                               <button type="submit" class="btn background-kickabout-blue home-form-button">Sign Up</button>

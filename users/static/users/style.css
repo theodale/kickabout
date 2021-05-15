@@ -31,12 +31,27 @@
     border: none;
 }
 
-.home-form-label {
+.form-label {
     color: white;
-    font-size: 21px;
 }
 
 .test {
     background-color: red;
 }
 
+.change-password-card {
+    height: 450px;
+    border-radius: 25px;
+    background-color: rgba(70, 130, 180, 1);
+    border: none;
+}
+
+.form-error-text {
+    font-size: small;
+    color: white;
+}
+
+.change-password-link {
+    text-decoration: none;
+    color: rgba(70, 130, 180, 1);
+}

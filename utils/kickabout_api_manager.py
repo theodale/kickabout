@@ -9,7 +9,6 @@ from theguardian import theguardian_content
 from theguardian import theguardian_tag
 import math
 
-
 rapid_api_headers = {
     'x-rapidapi-key': "0d18a23271msh79f81ab985ee668p136a4ajsnac5b16b6c7cc",
     'x-rapidapi-host': "api-football-v1.p.rapidapi.com"
@@ -49,9 +48,17 @@ def get_team_results(team_id, amount):
 
 
 def get_team_tweets(team_name, amount):
-    team_tweets = [t for t in tw.Cursor(api.search,
+    statuses = [t for t in tw.Cursor(api.search,
         q=team_name, count=10, lang="en", result_type="mixed").items(amount)]
-    return team_tweets
+    related_tweets = []
+    for status in statuses:
+        tweet = {
+            "text": status.text,
+            "url": "https://twitter.com/twitter/statuses/" + str(status.id),
+            "user": status.user.screen_name
+        }
+        related_tweets.append(tweet)
+    return related_tweets
 
 
 def get_team_news(team_name, page_number, page_size):
@@ -62,6 +69,11 @@ def get_team_news(team_name, page_number, page_size):
         page_size = page_size,
         page = page_number
     )
+    # remove tailing source name from title
+    for article in news['articles']:
+        remove_length = -1 * (len(article['source']['name']) + 2)
+        if article['title'][remove_length:] == "- " + article['source']['name']:
+            article['title'] = article['title'][:remove_length]
     return news
 
 

@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
 import requests, json
 from django.contrib.auth.models import User
 from users.models import Profile
@@ -24,6 +25,10 @@ def show(request, team_id):
     team_details = get_team_details(team_id)
     team_name = team_details['name']
     saved_news_item_titles = [item.title for item in request.user.profile.saved_news_items.all()]
+    try:
+        followed =  Team.objects.get(name = team_name) in request.user.profile.teams.all()
+    except Team.DoesNotExist:
+        followed = False
     args = {
         'details': team_details,
         'results': get_team_results(team_id, 10),
@@ -45,37 +50,11 @@ def follow_team(request, api_id, name):
         team = Team(name = name, api_id = api_id)
         team.save()
     profile.follow_team(team)
-    return redirect('/teams/')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 def unfollow_team(request, api_id):
     profile = request.user.profile
     team = Team.objects.get(api_id = api_id)
     profile.unfollow_team(team)
-    return redirect('/teams/')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-def save_news_item(request):
-    if request.method == 'POST':
-        profile = Profile.objects.get(id = request.POST.get("profile_id"))
-        title = request.POST.get("title")
-        url = request.POST.get("url")
-        source = request.POST.get("source")
-        date = request.POST.get("date")
-        item = SavedNewsItem(profile = profile,
-                             title = title,
-                             url = url,
-                             source = source,
-                             date = date)
-        item.save()
-        profile.save_news_item(item)
-        team_id = request.POST.get("team_id")
-        return redirect("/teams/" + str(team_id))
-    return redirect("/teams/")
-
-def unsave_news_item(request):
-    if request.method == 'POST':
-        profile = Profile.objects.get(id = request.POST.get("profile_id"))
-        item = SavedNewsItem.objects.get(title = request.POST.get("title"))
-        profile.unsave_news_item(item)
-        team_id = request.POST.get("team_id")
-        return redirect("/teams/" + str(team_id))
-    return redirect("/teams/")

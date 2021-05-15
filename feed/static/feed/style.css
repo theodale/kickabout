@@ -1,0 +1,10 @@
+.feed-card {
+    border-radius: 5px;
+    border: none;
+    background-color: white;
+}
+
+.feed-item-image {
+    max-width: 100%;
+    height: auto;
+}

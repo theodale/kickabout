@@ -19,30 +19,3 @@ def feed(request, page_id):
         return render(request, 'feed.html', args)
     else:
         return redirect("/teams/")
-
-def save_news_item(request):
-    if request.method == 'POST':
-        profile = Profile.objects.get(id=request.POST.get("profile_id"))
-        title = request.POST.get("title")
-        url = request.POST.get("url")
-        source = request.POST.get("source")
-        date = request.POST.get("date")
-        item = SavedNewsItem(profile = profile,
-                             title = title,
-                             url = url,
-                             source = source,
-                             date = date)
-        item.save()
-        profile.save_news_item(item)
-        page_id = request.POST.get("page_id")
-        return redirect("/feed/" + str(page_id))
-    return redirect("/feed/1")
-
-def unsave_news_item(request):
-    if request.method == 'POST':
-        profile = Profile.objects.get(id = request.POST.get("profile_id"))
-        item = SavedNewsItem.objects.get(title = request.POST.get("title"))
-        profile.unsave_news_item(item)
-        page_id = request.POST.get("page_id")
-        return redirect("/feed/" + str(page_id))
-    return redirect("/feed/1")

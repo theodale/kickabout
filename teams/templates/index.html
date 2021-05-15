@@ -4,9 +4,9 @@
 <link rel="stylesheet" href="{% static 'teams/style.css' %}" type="text/css" />
 {% endblock %}
 {% block logged_in_content %}
-<div class="row">
+<div class="row mt-3">
   <div class="col-8 px-4">
-    <div class="card teams-card shadow py-3">
+    <div class="card light-purple-card shadow py-3">
       <div class="row">
         <div class="col-12 d-flex justify-content-center">
           <h1 class="kickabout-grey">Premier League Teams</h1>
@@ -21,17 +21,17 @@
                   <h5>{{ team.name }}</h5>
                 </div>
                 <div class="col-3">
-                  <a href="{% url 'signup' %}" class="h6 view-team-link">
+                  <a href="{% url 'team' team_id=team.team_id %}" class="h6 view-team-link">
                     Team News
                   </a>
                 </div>
                 <div class="col-3 d-flex justify-content-center">
                   {% if team.team_id in followed_teams_api_ids %}
-                  <a href="{% url 'unfollow' api_id=team.team_id  %}" class="h6 unfollow-team-link">
+                  <a href="{% url 'unfollow_team' api_id=team.team_id %}" class="h6 unfollow-link">
                     UnFollow
                   </a>
                   {% else %}
-                  <a href="{% url 'follow' api_id=team.team_id name=team.name %}" class="h6 follow-team-link">
+                  <a href="{% url 'follow_team' api_id=team.team_id name=team.name %}" class="h6 follow-link">
                     Follow
                   </a>
                   {% endif %}
@@ -43,21 +43,20 @@
       </div>
     </div>
   </div>
-
   <div class="col-4">
-    <div class="card guidance-header-card shadow mb-3">
+    <div class="card dark-purple-card shadow mb-3">
         <div class="row pt-2">
           <div class="col-12 d-flex justify-content-center">
             <h3 class="kickabout-grey">Site Guidance</h3>
           </div>
         </div>
     </div>
-    <div class="card guidance-card shadow">
+    <div class="card yellow-card shadow">
       <div class="row">
         <div class="col-12 px-5 pt-3">
           <p>
             Select which teams you want to follow on the table on the left. You
-            can view their induvidual news pages on view the 'Team News' link.
+            can view their induvidual news pages via the 'Team News' link.
           </p>
           <p>
             View a news feed consisting of articles related to the teams you
@@ -67,17 +66,11 @@
             You can save articles on the feed and team news pages. Click the
             profile link in the navbar to see these saved articles.
           </p>
-          <p>
-            This site was created by Theo Dale. The fantasy football predictions
-            and information were created by Anirudh Yadav.
-          </p>
         </div>
       </div>
     </div>
   </div>
-
 </div>
-
 {% endblock %}
 
 
