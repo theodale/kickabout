@@ -42,6 +42,8 @@ def fixture_difficulty(team_id, fixtures):
     opposition = []
     event = []
     
+    IF 
+    
     if len(fixtures) > 5:
         fixtures = fixtures[:5]
     

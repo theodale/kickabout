@@ -12,7 +12,7 @@ from utils import *
 
 def PlayerInfo(player_id, element_stats):
     
-    info = ['id','web_name', 'now_cost', 'selected_by_percent', 'status', 'total_points']
+    info = ['id','web_name', 'now_cost', 'selected_by_percent', 'status', 'total_points', 'bps']
     stats = [element for element in element_stats if element['id'] == player_id][0]
     
     stats = {key: stats[key] for key in info}
@@ -62,14 +62,38 @@ def PlayerStats(player_id):
 
 
 def getPlayerStats(player_id, element_stats):
+    """
+    Getter Function for player comparision data.
+    Can be used for any number of players for comparision
+
+    Parameters
+    ----------
+    player_id : int List
+        List of player_ids, len=2.
+    element_stats : JSON type str
+        From FPL API, containing player statistics.
+
+    Returns
+    -------
+    JSON type string
+        "players" key: list of python dict containing stats for
+                       each player_id
+
+    """
     
-    info = PlayerInfo(player_id, element_stats)
-    stats = PlayerStats(player_id)
+    playerStatList = []
     
-    statistics = info.copy()
-    statistics.update(stats)
-    
-    return json.dumps(statistics)
+    for player in player_id:
+        info = PlayerInfo(player, element_stats)
+        stats = PlayerStats(player)
+        
+        statistics = info.copy()
+        statistics.update(stats)
+        
+        playerStatList.append(statistics)
+        
+    playerComparision = {"players":playerStatList}
+    return json.dumps(playerComparision, indent=2)
 
 
 if __name__ == '__main__':
@@ -80,4 +104,6 @@ if __name__ == '__main__':
     static_endpoint = API_ENDPOINTS['static']
     element_stats = get(static_endpoint)['elements']
     
-    ans = getPlayerStats(player_id, element_stats)
+    players = [9,15]
+    
+    ans = getPlayerStats(players, element_stats)

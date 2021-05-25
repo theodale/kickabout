@@ -30,8 +30,26 @@ def elementType_to_PlayerPosition(element_type):
 
 
 def playerName_to_id(name=None, player_id=None):
-    pass
-
+    
+    static_endpoint = API_ENDPOINTS['static']
+    element_stats = get(static_endpoint)['elements']
+    
+    if name != None and player_id == None:
+        player_id = [element['id'] for element in element_stats
+                     if element['web_name']==name]
+        
+        return player_id[0]
+    
+    if name == None and player_id != None:
+        player_id = [element['web_name'] for element in element_stats
+                     if element['id']==player_id]
+        
+        return player_id[0]
+    
+    if name == None and player_id == None:
+        return {element['id']: element['web_name'] for element in element_stats}
+    
+    
 
 def last_n_GW(static_endpoint, n):
     
